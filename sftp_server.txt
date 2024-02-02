@@ -1,0 +1,33 @@
+Step 1: Install SSH
+$ sudo apt install ssh
+
+Step 2: Change SSHD configuration for SFTP group
+$ sudo nano /etc/ssh/sshd_config
+
+Now, paste the following lines at the end or bottom of the file:
+Match group sftp
+ChrootDirectory /home
+X11Forwarding no
+AllowTcpForwarding no
+ForceCommand internal-sftp
+
+Step 3: Restart SSH services
+$ sudo systemctl restart ssh
+
+Step 4: Create SFTP users group
+$ sudo addgroup sftp
+
+Step 5: Create a new SFTP user
+$ sudo useradd -m <user> -g sftp
+
+$ sudo passwd <user>
+
+Step 6: Grant permissions to the specific directory
+$ sudo chmod 700 /home/<user>/
+
+Method 1: Connect to the SFTP using the command line
+$ sftp <user>@127.0.0.1
+
+sftp> cd <user>
+sftp> mkdir test-sftp
+sftp> ls
