@@ -1,0 +1,187 @@
+create type status as enum ('success','failure','no_action');
+
+create table runlog(
+    jobId serial primary key,
+    jobName varchar(255),
+    startDateTime timestamp,
+    endDateTime timestamp,
+    status status,
+    error_log text
+);
+
+create table app_config(
+    port int,
+    smtp_server_domain_name varchar(50),
+    sender_mail varchar(255),
+    password varchar(255)
+);
+
+insert into app_config (port,smtp_server_domain_name,sender_mail,password) 
+values (465,'smtp.gmail.com','xx.xx@impressico.com','XXXXXXXX')
+
+insert into runlog (jobId,jobName,startDateTime,endDateTime,status) 
+values (1,'source import', now(),now(),'success' )
+
+alter table runlog add column email_status int default 0;
+
+create table notification_info(
+    id int,
+    email_to varchar(50),
+    email_cc varchar(50),
+    status int
+)
+
+insert into notification_info (id, email_to, email_cc, status) 
+values(1, 'mazumderabhik@gmail.com','mazumderabhik@yahoo.co.in',1)
+
+#create sourcedata table
+
+CREATE TABLE sourcedata (
+   year integer,
+   month varchar(50)
+);
+
+
+INSERT INTO sourcedata (year, month)
+VALUES  (2022,'january'),
+        (2022,'february'),
+        (2022,'march'),
+        (2022,'april'),
+        (2022,'may');
+
+
+
+create table locationreports(
+    file_id serial primary key,
+    file_name varchar(255),
+    most_uses_location text[]
+);
+
+create table durationreports(
+    file_id serial primary key,
+    file_name varchar(255),
+    max_duration text[],
+    min_duration text[]   
+);
+
+create table configuration(
+    id serial primary key,
+    type varchar(20),
+    source varchar(150),
+    keys varchar(30),
+    status int,
+    comment varchar(150)
+);
+
+insert into configuration (type,source,keys,status,comment) values('delete','Web_scrapping','delete_csv',1,'Do you wnat to delete csv files?');
+insert into configuration (type,source,keys,status,comment) values('delete','Web_scrapping','delete_parquet',1,'Do you wnat to delete parquet files?');
+insert into configuration (type,source,keys,status,comment) values('delete','Web_scrapping','delete_updated_data',1,'Do you wnat to delete transformed csv files?');
+insert into configuration (type,source,keys,status,comment) values('delete','Web_scrapping','delete_logs',1,'Do you wnat to delete logs?');
+insert into configuration (type,source,keys,status,comment) values('delete','Web_scrapping','delete_duration_data',1,'Do you wnat to delete duration data?');
+insert into configuration (type,source,keys,status,comment) values('delete','Web_scrapping','delete_location_data',1,'Do you wnat to delete location data?');
+insert into configuration (type,source,keys,status,comment) values('insert','sftp','data_fetch',0,'Do you want to fetch data from sftp?');
+insert into configuration (type,source,keys,status,comment) values('insert','Web_scrapping','collect_data_from_source',1,'Do you wnat to collect data from web source?');
+insert into configuration (type,source,keys,status,comment) values('insert','Web_scrapping','converting_parquet_to_csv',1,'Do you wnat to convert all parquet to csv?');
+insert into configuration (type,source,keys,status,comment) values('insert','Web_scrapping','transform_data',1,'Do you want to tranform data?');
+insert into configuration (type,source,keys,status,comment) values('insert','Web_scrapping','report_generate',1,'Do you wnat to generate report?');
+
+
+
+
+----------------- This is for mssql --------------
+
+
+create table runlog(
+    jobId int IDENTITY(1,1) primary key,
+    jobName varchar(255),
+    startDateTime DATETIME ,
+    endDateTime DATETIME ,
+    status VARCHAR(10) NOT NULL CHECK (status IN('success', 'failure', 'no_action')),
+    error_log text
+);
+
+create table app_config(
+    port int,
+    smtp_server_domain_name varchar(50),
+    sender_mail varchar(255),
+    password varchar(255)
+);
+
+insert into app_config (port,smtp_server_domain_name,sender_mail,password) 
+values (465,'smtp.gmail.com','xx.xx@impressico.com','XXXXXXXX')
+
+insert into runlog (jobName,startDateTime,endDateTime,status) 
+values ('source import', getdate(),getdate(),'success' )
+
+alter table runlog add email_status int default 0;
+
+create table notification_info(
+    id int,
+    email_to varchar(50),
+    email_cc varchar(50),
+    status int
+)
+
+insert into notification_info (id, email_to, email_cc, status) 
+values(1, 'mazumderabhik@gmail.com','mazumderabhik@yahoo.co.in',1)
+
+CREATE TABLE sourcedata (
+   year integer,
+   month varchar(50)
+);
+
+
+INSERT INTO sourcedata (year, month)
+VALUES  (2022,'january'),
+        (2022,'february'),
+        (2022,'march'),
+        (2022,'april'),
+        (2022,'may');
+
+
+create table Collect_from_source(
+    id int IDENTITY(1,1) primary key,
+    source varchar(150),
+    comment varchar(255),
+    answer bit
+);
+
+insert into Collect_from_source (source,comment,answer) 
+values ('sftp','Collect data from web?',0);
+
+insert into Collect_from_source (source,comment,answer) 
+values ('web_scrap','Collect data from web?',1);
+
+create table Collect_from_csv(
+    id int IDENTITY(1,1) primary key,
+    source varchar(150),
+    comment varchar(255),
+    answer bit
+);
+
+insert into Collect_from_csv (source,comment,answer) 
+values ('web_scrapping','Convert parquet to csv?',1);
+
+
+create table Pandas_data(
+    id int IDENTITY(1,1) primary key,
+    source varchar(150),
+    comment varchar(255),
+    answer bit
+);
+
+insert into Pandas_data (source,comment,answer) 
+values ('web_scrapping','Transform data?',1);
+
+create table locationreports(
+    file_id int IDENTITY(1,1) primary key,
+    file_name varchar(255),
+    most_uses_location text
+);
+
+create table durationreports(
+    file_id int IDENTITY(1,1) primary key,
+    file_name varchar(255),
+    max_duration text,
+    min_duration text   
+);

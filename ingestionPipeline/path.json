@@ -1,0 +1,10 @@
+
+{
+    "/home/annu/test-sftp/fhvhv_tripdata_2022-01.parquet": "../data/year/2022/months/january/parquet/fhvhv_tripdata_2022-01.parquet",
+    "/home/annu/test-sftp/fhv_tripdata_2022-01.parquet": "../data/year/2022/months/january/parquet/fhv_tripdata_2022-01.parquet",
+    "/home/annu/test-sftp/green_tripdata_2022-01.parquet": "../data/year/2022/months/january/parquet/green_tripdata_2022-01.parquet",
+    "/home/annu/test-sftp/yellow_tripdata_2022-01.parquet":"../data/year/2022/months/january/parquet/yellow_tripdata_2022-01.parquet"
+    
+
+    }
+
